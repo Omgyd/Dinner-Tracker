@@ -1,6 +1,7 @@
 import os
 import uuid
 import random
+import datetime as dt
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from sheets import get_dish_list
@@ -12,7 +13,7 @@ client = MongoClient(os.environ.get("MONGODB_URI"))
 db = client["test-database"]
 
 dishes = db.dishes
-polls = db.polls
+poll = db.poll
 
 
 
@@ -46,7 +47,34 @@ def create_poll_options():
     return random_list
 
 
+def create_poll():
+    poll_options = create_poll_options()
+    day_poll = {
+            "_id": uuid.uuid4().hex,
+            poll_options[0]: {"Votes": 0},
+            poll_options[1]: {"Votes": 0}, 
+            poll_options[2]: {"Votes": 0},
+            "date": "Today"
+            }
+    poll.insert_one(day_poll)
 
+
+def get_current_poll(date):
+    todays_poll = poll.find_one({"date": date}, {'_id': 0, 'date': 0})
+    return todays_poll
+
+
+
+def update_vote(dish, date):
+    poll_to_update = get_current_poll(date)
+    vote_count = poll_to_update[dish]["Votes"]
+    new_vote = {"$set": {dish: {"Votes": vote_count + 1}}}
+    poll.update_one(poll_to_update, new_vote)
+
+def set_votes_zero():
+    for item in get_current_poll("Today"):
+        new_vote = {"$set": {item: {"Votes": 0}}}
+        poll.update_one(get_current_poll("Today"), new_vote)  
 
 
 
