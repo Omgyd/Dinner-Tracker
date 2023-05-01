@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dinner</title>
-</head>
-<body>
+{% extends 'layout.html' %}
+
+{% block body_block %}
+    <time class="date" datetime="{{date}}">
+        <h1>{{ date.strftime("%m-%d") }}</h1>
+    </time>
+
     <h1>This is the dinner tracker app</h1>
         {% for item, votes in poll.items() %}
         <h3> Dish: {{ item }}</h3>
@@ -16,7 +14,4 @@
         </form>
         
         {% endfor %}
- 
-    
-</body>
-</html>
+{% endblock %}

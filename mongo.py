@@ -2,6 +2,7 @@ import os
 import uuid
 import random
 import datetime as dt
+from flask import redirect, render_template, flash
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from sheets import get_dish_list
@@ -14,8 +15,11 @@ db = client["test-database"]
 
 dishes = db.dishes
 poll = db.poll
+users = db.users
 
-
+def today_at_midnight():
+    today = dt.datetime.today()
+    return dt.datetime(today.year, today.month, today.day)
 
 def add_dish():
     for x in get_dish_list():
@@ -49,12 +53,13 @@ def create_poll_options():
 
 def create_poll():
     poll_options = create_poll_options()
+    today = today_at_midnight()
     day_poll = {
             "_id": uuid.uuid4().hex,
             poll_options[0]: {"Votes": 0},
             poll_options[1]: {"Votes": 0}, 
             poll_options[2]: {"Votes": 0},
-            "date": "Today"
+            "date": today
             }
     poll.insert_one(day_poll)
 
@@ -72,13 +77,27 @@ def update_vote(dish, date):
     poll.update_one(poll_to_update, new_vote)
 
 def set_votes_zero():
-    for item in get_current_poll("Today"):
+    today = today_at_midnight()
+    for item in get_current_poll(today):
         new_vote = {"$set": {item: {"Votes": 0}}}
-        poll.update_one(get_current_poll("Today"), new_vote)  
+        poll.update_one(get_current_poll(today), new_vote) 
 
 
-
-
-
-
-
+def register_user(email, username, password1, password2):
+    today = today_at_midnight
+    user_found = users.find_one({'user': username})
+    email_found = users.find_one({'email': email})
+    if user_found:
+        flash("User is already registered.")
+        return render_template("register.html")
+    if email_found:
+        flash("Email is already registered.")
+        return render_template("register.html")
+    if password1 != password2:
+        flash("Passwords should match, please try again.")
+        return render_template('register.html')
+    else:
+        password = password2
+        user_info = {'email': email, 'user': username, 'password': password}
+        users.insert_one(user_info)
+        return redirect('index.html', date=today)
