@@ -6,6 +6,8 @@ from mongo import get_current_poll, update_vote, today_at_midnight, create_poll,
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
+
 if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
   sched = BackgroundScheduler()
   sched.add_job(create_poll,'cron', hour=0)
