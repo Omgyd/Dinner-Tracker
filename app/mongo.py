@@ -2,16 +2,20 @@ import os
 import uuid
 import random
 import datetime as dt
-from flask import redirect, render_template, flash
-from pymongo import MongoClient
+from flask import redirect, render_template, flash, url_for
 from dotenv import load_dotenv
-from sheets import get_dish_list
+# from app.sheets import get_dish_list
+# from app import db
+from pymongo import MongoClient
+
 
 load_dotenv()
 
 client = MongoClient(os.environ.get("MONGODB_URI"))
 
-db = client["test-database"]
+db = client['test-database']
+
+
 
 dishes = db.dishes
 poll = db.poll
@@ -59,21 +63,26 @@ def create_poll():
             poll_options[0]: {"Votes": 0},
             poll_options[1]: {"Votes": 0}, 
             poll_options[2]: {"Votes": 0},
-            "date": today
+            "date": today,
+            "voted": []
             }
     poll.insert_one(day_poll)
 
 
 def get_current_poll(date):
-    todays_poll = poll.find_one({"date": date}, {'_id': 0, 'date': 0})
+    todays_poll = poll.find_one({"date": date}, {'_id': 0, 'date': 0,})
     return todays_poll
 
 
 
-def update_vote(dish, date):
+def update_vote(dish, date, user):
     poll_to_update = get_current_poll(date)
     vote_count = poll_to_update[dish]["Votes"]
-    new_vote = {"$set": {dish: {"Votes": vote_count + 1}}}
+    voted_list = poll_to_update["voted"]
+    if user in voted_list:
+        flash("You have already voted")
+        return redirect("index.html")
+    new_vote = {"$set": {dish: {"Votes": vote_count + 1}}, "$push": {'voted': user}}
     poll.update_one(poll_to_update, new_vote)
 
 def set_votes_zero():
@@ -101,3 +110,11 @@ def register_user(email, username, password1, password2):
         user_info = {'email': email, 'user': username, 'password': password}
         users.insert_one(user_info)
         return redirect('index.html', date=today)
+    
+def login_user(email, password):
+    user = users.find_one({'email': email})
+    user_password = user['password']
+    if password == user_password:
+        return True
+    else:
+        print("Incorrect Username or Password")

@@ -1,7 +1,7 @@
 import gspread
 
 
-gc = gspread.service_account(filename='static/creds.json')
+gc = gspread.service_account(filename='app/static/creds.json')
 
 
 def get_dish_list():

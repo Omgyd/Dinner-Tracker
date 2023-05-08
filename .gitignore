@@ -1,4 +1,6 @@
 /.env
-/__pycache__
+/app/__pycache__
 /.venv
-/static/creds.json
+/app/static/creds.json
+/flask_session
+/__pycache__
