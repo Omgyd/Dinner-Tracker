@@ -20,18 +20,20 @@ db = client['test-database']
 dishes = db.dishes
 poll = db.poll
 users = db.users
+votes = db.votes
 
 def today_at_midnight():
     today = dt.datetime.today()
     return dt.datetime(today.year, today.month, today.day)
 
-def add_dish():
-    for x in get_dish_list():
-        record = {"_id": uuid.uuid4().hex, 'dish': x[0], 'ingredients': x[1], 'time': x[2]}
-        if dishes.find_one({'dish': x[0]}):
-            print("Dish already in database")
-        else:
-            dishes.insert_one(record)
+# Function to import dish info from google spreadsheet
+# def add_dish():
+#     for x in get_dish_list():
+#         record = {"_id": uuid.uuid4().hex, 'dish': x[0], 'ingredients': x[1], 'time': x[2]}
+#         if dishes.find_one({'dish': x[0]}):
+#             print("Dish already in database")
+#         else:
+#             dishes.insert_one(record)
 
 def get_dishes():
     dishes_dict = {}
@@ -64,34 +66,41 @@ def create_poll():
             poll_options[1]: {"Votes": 0}, 
             poll_options[2]: {"Votes": 0},
             "date": today,
-            "voted": []
             }
-    poll.insert_one(day_poll)
+    _id = poll.insert_one(day_poll)
+    votes.insert_one({'poll_id': _id.inserted_id, 'date': today, 'voted': []})
+
 
 
 def get_current_poll(date):
-    todays_poll = poll.find_one({"date": date}, {'_id': 0, 'date': 0,})
+    todays_poll = poll.find_one({"date": date}, {'_id': 0, 'date': 0})
     return todays_poll
 
 
 
 def update_vote(dish, date, user):
-    poll_to_update = get_current_poll(date)
+    poll_to_update = poll.find_one({'date': date})
     vote_count = poll_to_update[dish]["Votes"]
-    voted_list = poll_to_update["voted"]
-    if user in voted_list:
+    voted_list = votes.find_one({'poll_id': poll_to_update['_id']})
+    if user in voted_list['voted']:
         flash("You have already voted")
         return redirect("index.html")
-    new_vote = {"$set": {dish: {"Votes": vote_count + 1}}, "$push": {'voted': user}}
+    new_vote = {"$set": {dish: {"Votes": vote_count + 1}}}
+    new_voter = {'$push': {'voted': user}}
     poll.update_one(poll_to_update, new_vote)
+    votes.update_one(voted_list, new_voter)
 
 def set_votes_zero():
     today = today_at_midnight()
+    current_poll = poll.find_one({'date': today})
+    voters = votes.find_one({'poll_id': current_poll['_id']})
+    zero_voters = {'$set': {'voted': None}}
     for item in get_current_poll(today):
         new_vote = {"$set": {item: {"Votes": 0}}}
         poll.update_one(get_current_poll(today), new_vote) 
+    votes.update_one(voters, zero_voters)
 
-
+    
 def register_user(email, username, password1, password2):
     today = today_at_midnight
     user_found = users.find_one({'user': username})
