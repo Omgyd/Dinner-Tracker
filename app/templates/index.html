@@ -14,11 +14,15 @@
       </ul>
     {% endif %}
     {% endwith %}
+    {% if not poll %}
+      <h1>No Poll for Today</h1>
+    {% else %}
         {% for item, votes in poll.items() %}
         <h3> Dish: {{ item }}</h3>
         <p> Votes: {{ votes["Votes"] }}</p>
         <form class="poll__form" method="POST" action="{{ url_for('vote') }}">
             <button type="submit" name="dish" value="{{ item }}">Vote</button>
         </form>
-        {% endfor %}        
+        {% endfor %}
+    {% endif %}        
 {% endblock %}
