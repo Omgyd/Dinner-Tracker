@@ -4,6 +4,9 @@ import random
 import datetime as dt
 from flask import redirect, render_template, flash, url_for
 from dotenv import load_dotenv
+from .models import User
+from passlib.hash import pbkdf2_sha256
+from dataclasses import asdict
 
 # from app.sheets import get_dish_list
 # from app import db
@@ -105,24 +108,22 @@ def set_votes_zero():
     votes.update_one(voters, zero_voters)
 
 
-def register_user(email, username, password1, password2):
+def register_user(form):
     today = today_at_midnight
-    user_found = users.find_one({"user": username})
-    email_found = users.find_one({"email": email})
-    if user_found:
-        flash("User is already registered.")
-        return render_template("register.html")
+    email_found = users.find_one({"email": form.email.data})
     if email_found:
         flash("Email is already registered.")
         return render_template("register.html")
-    if password1 != password2:
-        flash("Passwords should match, please try again.")
-        return render_template("register.html")
     else:
-        password = password2
-        user_info = {"email": email, "user": username, "password": password}
-        users.insert_one(user_info)
-        return redirect("index.html", date=today)
+        user = User(
+            _id=uuid.uuid4().hex,
+            email=form.email.data,
+            password=pbkdf2_sha256.hash(form.password.data),
+        )
+
+        users.insert_one(asdict(user))
+
+        flash("User registered successfully", "success")
 
 
 def login_user(email, password):

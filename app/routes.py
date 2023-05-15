@@ -9,7 +9,7 @@ from app.mongo import (
     register_user,
     login_user,
 )
-from app.forms import LoginForm
+from app.forms import LoginForm, RegisterForm
 from app import app
 
 
@@ -47,13 +47,15 @@ def vote():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        username = request.form.get("fullname")
-        email = request.form.get("email")
-        password1 = request.form.get("password1")
-        password2 = request.form.get("password2")
-        register_user(email, username, password1, password2)
-    return render_template("register.html")
+    if session.get('email'):
+        return redirect(url_for("index"))
+    
+    form = RegisterForm()
+    if form.validate_on_submit():
+        register_user(form)
+        return redirect(url_for("index"))
+    
+    return render_template("register.html", form=form)
 
 
 @app.route("/login", methods=["GET", "POST"])
