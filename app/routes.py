@@ -10,7 +10,7 @@ from app import app
 
 if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
   sched = BackgroundScheduler()
-  sched.add_job(create_poll,'cron', hour=0)
+  sched.add_job(create_poll,'cron', hour=10, minute=5, timezone="US/Eastern")
   sched.start()
 
 @app.route("/", methods=["GET", "POST"])
@@ -19,7 +19,7 @@ def index():
         return redirect(url_for('login'))
     today = today_at_midnight()
     current_poll = get_current_poll(today)
-    print(current_poll)
+    # print(current_poll)
     return render_template('index.html', poll=current_poll, date=today)
 
 
