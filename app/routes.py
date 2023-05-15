@@ -19,27 +19,20 @@ if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     sched.start()
 
 
-<<<<<<< HEAD
 if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
   sched = BackgroundScheduler()
   sched.add_job(create_poll,'cron', hour=10, minute=5, timezone="US/Eastern")
   sched.start()
 
-=======
->>>>>>> ab1a1696fe8a029d34b49d443c4b710239853849
 @app.route("/", methods=["GET", "POST"])
 def index():
     if not session.get("username"):
         return redirect(url_for("login"))
     today = today_at_midnight()
     current_poll = get_current_poll(today)
-<<<<<<< HEAD
     # print(current_poll)
     return render_template('index.html', poll=current_poll, date=today)
-=======
-    print(current_poll)
-    return render_template("index.html", poll=current_poll, date=today)
->>>>>>> ab1a1696fe8a029d34b49d443c4b710239853849
+
 
 
 @app.route("/vote", methods=["GET", "POST"])
