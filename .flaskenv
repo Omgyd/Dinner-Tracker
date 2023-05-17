@@ -1,2 +1,2 @@
 FLASK_APP=dinner_tracker.py
-FLASK_DEBUG=True
+FLASK_DEBUG=False

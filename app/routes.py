@@ -21,7 +21,7 @@ if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
 
 if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
   sched = BackgroundScheduler()
-  sched.add_job(create_poll,'cron', hour=10, minute=5, timezone="US/Eastern")
+  sched.add_job(create_poll,'cron', hour=0, minute=0, timezone="US/Eastern")
   sched.start()
 
 @app.route("/", methods=["GET", "POST"])
