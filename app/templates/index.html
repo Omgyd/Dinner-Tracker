@@ -19,11 +19,12 @@
       <h1>No Poll for Today</h1>
     {% else %}
         {% for item, votes in poll.items() %}
-        <h3> Dish: {{ item }}</h3>
+        <h3>{{ item }}</h3>
         <p> Votes: {{ votes["Votes"] }}</p>
         <form class="poll__form" method="POST" action="{{ url_for('vote') }}">
             <button type="submit" class="btn btn-secondary" name="dish" value="{{ item }}">Vote</button>
         </form>
         {% endfor %}
-    {% endif %}        
+    {% endif %}
+    <h3>Current Winner:</h3>         
 {% endblock %}

@@ -4,7 +4,8 @@ import random
 import datetime as dt
 from flask import redirect, render_template, flash, url_for, session
 from dotenv import load_dotenv
-from .models import User
+
+# from .models import User
 from passlib.hash import pbkdf2_sha256
 from dataclasses import asdict
 
@@ -135,4 +136,10 @@ def login_user(form):
     if user and pbkdf2_sha256.verify(form.password.data, user.password):
         session["user_id"] = user._id
         session["email"] = user.email
-        return redirect(url_for('index'))
+        return redirect(url_for("index"))
+
+
+# today = today_at_midnight()
+# todays_pull = get_current_poll(today)
+
+# print(todays_pull)

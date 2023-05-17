@@ -1,0 +1,11 @@
+meter{
+  width:100px;
+}
+span{
+}
+span::after {
+ content : attr(data-value);
+ top:0px;
+ left:-70px;
+ position:relative;
+}

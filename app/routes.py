@@ -19,10 +19,11 @@ if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     sched.start()
 
 
-if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
-  sched = BackgroundScheduler()
-  sched.add_job(create_poll,'cron', hour=0, minute=0, timezone="US/Eastern")
-  sched.start()
+if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+    sched = BackgroundScheduler()
+    sched.add_job(create_poll, "cron", hour=0, minute=0, timezone="US/Eastern")
+    sched.start()
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -31,8 +32,7 @@ def index():
     today = today_at_midnight()
     current_poll = get_current_poll(today)
     # print(current_poll)
-    return render_template('index.html', poll=current_poll, date=today)
-
+    return render_template("index.html", poll=current_poll, date=today)
 
 
 @app.route("/vote", methods=["GET", "POST"])
@@ -47,14 +47,14 @@ def vote():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    if session.get('email'):
+    if session.get("email"):
         return redirect(url_for("index"))
-    
+
     form = RegisterForm()
     if form.validate_on_submit():
         register_user(form)
         return redirect(url_for("index"))
-    
+
     return render_template("register.html", form=form)
 
 
