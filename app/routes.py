@@ -26,7 +26,7 @@ if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    if not session.get("username"):
+    if not session.get("email"):
         return redirect(url_for("login"))
     today = today_at_midnight()
     current_poll = get_current_poll(today)
@@ -38,7 +38,7 @@ def index():
 @app.route("/vote", methods=["GET", "POST"])
 def vote():
     today = today_at_midnight()
-    user = session.get("username")
+    user = session.get("email")
     if request.method == "POST":
         dish_name = request.form.get("dish")
         update_vote(dish_name, today, user)
@@ -62,10 +62,14 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        username = form.data.get("username")
-        password = form.data.get("password")
-        if login_user(username, password):
-            session["username"] = username
+        if login_user(form):
             return redirect(url_for("index"))
 
     return render_template("login.html", form=form)
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+
+    return redirect(url_for("login"))

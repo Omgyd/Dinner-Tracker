@@ -2,7 +2,7 @@ import os
 import uuid
 import random
 import datetime as dt
-from flask import redirect, render_template, flash, url_for
+from flask import redirect, render_template, flash, url_for, session
 from dotenv import load_dotenv
 from .models import User
 from passlib.hash import pbkdf2_sha256
@@ -126,10 +126,13 @@ def register_user(form):
         flash("User registered successfully", "success")
 
 
-def login_user(email, password):
-    user = users.find_one({"email": email})
-    user_password = user["password"]
-    if password == user_password:
-        return True
-    else:
-        print("Incorrect Username or Password")
+def login_user(form):
+    user_data = users.find_one({"email": form.email.data})
+    if not user_data:
+        flash("Login credentials not correct", category="danger")
+        return redirect(url_for("login"))
+    user = User(**user_data)
+    if user and pbkdf2_sha256.verify(form.password.data, user.password):
+        session["user_id"] = user._id
+        session["email"] = user.email
+        return redirect(url_for('index'))
