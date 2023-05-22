@@ -135,4 +135,4 @@ def login_user(form):
     if user and pbkdf2_sha256.verify(form.password.data, user.password):
         session["user_id"] = user._id
         session["email"] = user.email
-        return redirect(url_for('index'))
+        return redirect(url_for("index"))
