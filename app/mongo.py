@@ -17,7 +17,7 @@ load_dotenv()
 
 client = MongoClient(os.environ.get("MONGODB_URI"))
 
-db = client["test-database"]
+db = client["dinner-tracker"]
 
 
 dishes = db.dishes
