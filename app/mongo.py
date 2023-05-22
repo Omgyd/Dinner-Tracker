@@ -5,7 +5,7 @@ import datetime as dt
 from flask import redirect, render_template, flash, url_for, session
 from dotenv import load_dotenv
 
-# from .models import User
+from .models import User
 from passlib.hash import pbkdf2_sha256
 from dataclasses import asdict
 

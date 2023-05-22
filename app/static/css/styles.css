@@ -1,11 +1,7 @@
-meter{
-  width:100px;
+h3 {
+  margin: 0;
+  display: inline-block;
 }
-span{
-}
-span::after {
- content : attr(data-value);
- top:0px;
- left:-70px;
- position:relative;
+button {
+  margin-left: auto;
 }
