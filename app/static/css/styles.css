@@ -1,7 +1,17 @@
+body {
+  background-color: #003e29;
+  color: #b1cbc2;
+}
+
+.navbar {
+  background-color: #36e556;
+}
+
 h3 {
   margin: 0;
   display: inline-block;
 }
-button {
-  margin-left: auto;
+
+.progress {
+  margin-bottom: 10px;
 }

@@ -137,9 +137,3 @@ def login_user(form):
         session["user_id"] = user._id
         session["email"] = user.email
         return redirect(url_for("index"))
-
-
-# today = today_at_midnight()
-# todays_pull = get_current_poll(today)
-
-# print(todays_pull)
