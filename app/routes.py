@@ -8,6 +8,7 @@ from app.mongo import (
     create_poll,
     register_user,
     login_user,
+    get_current_winner,
 )
 from app.forms import LoginForm, RegisterForm
 from app import app
@@ -15,7 +16,7 @@ from app import app
 
 if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     sched = BackgroundScheduler()
-    sched.add_job(create_poll, "cron", hour=0, minute=0, timezone="US/Eastern")
+    sched.add_job(create_poll, "cron", hour=0, timezone="US/Eastern")
     sched.start()
 
 
@@ -25,8 +26,9 @@ def index():
         return redirect(url_for("login"))
     today = today_at_midnight()
     current_poll = get_current_poll(today)
+    current_winner = get_current_winner(today)
     # print(current_poll)
-    return render_template("index.html", poll=current_poll, date=today)
+    return render_template("index.html", poll=current_poll, date=today, current_winner=current_winner)
 
 
 @app.route("/vote", methods=["GET", "POST"])

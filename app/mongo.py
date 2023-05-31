@@ -4,6 +4,7 @@ import random
 import datetime as dt
 from flask import redirect, render_template, flash, url_for, session
 from dotenv import load_dotenv
+
 from .models import User
 from passlib.hash import pbkdf2_sha256
 from dataclasses import asdict
@@ -74,6 +75,7 @@ def create_poll():
         poll_options[1]: {"Votes": 0},
         poll_options[2]: {"Votes": 0},
         "date": today,
+        "total_votes": 0,
     }
     _id = poll.insert_one(day_poll)
     votes.insert_one({"poll_id": _id.inserted_id, "date": today, "voted": []})
@@ -91,10 +93,22 @@ def update_vote(dish, date, user):
     if user in voted_list["voted"]:
         flash("You have already voted")
         return redirect("index.html")
-    new_vote = {"$set": {dish: {"Votes": vote_count + 1}}}
+    new_vote = {"$set": {dish: {"Votes": vote_count + 1}}, "$inc": {'total_votes': 1}}
     new_voter = {"$push": {"voted": user}}
     poll.update_one(poll_to_update, new_vote)
     votes.update_one(voted_list, new_voter)
+
+def get_current_winner(date):
+    winning_votes = 0
+    winner = None
+    if get_current_poll(date) == None:
+        return False
+    for item, votes in get_current_poll(date).items():
+        if item != 'total_votes':
+            if votes["Votes"] > winning_votes:
+                winning_votes = votes["Votes"]
+                winner = item
+    return winner
 
 
 def set_votes_zero():
@@ -136,3 +150,7 @@ def login_user(form):
         session["user_id"] = user._id
         session["email"] = user.email
         return redirect(url_for("index"))
+
+
+# create_poll()
+# poll.update_one({"_id": "2c682d204a7a4837ad6c633e7657b0e3"}, {"$set": {"total_votes": 6}})
