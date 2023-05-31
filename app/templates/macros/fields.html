@@ -9,3 +9,13 @@
     {% endfor %}
 </div>
 {% endmacro %}
+
+
+{% macro winning_percent(votes, total_votes) %} 
+    {%- if votes == 0 or total_votes == 0 -%}
+        0
+    {% else %}
+    {{((votes / total_votes) * 100) | round}}
+    {%- endif -%}
+{% endmacro %}
+

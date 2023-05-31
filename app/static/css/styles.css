@@ -1,10 +1,14 @@
 body {
-  background-color: #003e29;
-  color: #b1cbc2;
+  background-color: #005f3f;
+  color: #f7faf9;
+}
+
+small {
+  color: black;
 }
 
 .navbar {
-  background-color: #36e556;
+  background-color: #1fad39;
 }
 
 h3 {
@@ -14,4 +18,8 @@ h3 {
 
 .progress {
   margin-bottom: 10px;
+}
+
+.progress-bar {
+  background-color: #4397c4;
 }

@@ -8,6 +8,7 @@ from app.mongo import (
     create_poll,
     register_user,
     login_user,
+    get_current_winner,
 )
 from app.forms import LoginForm, RegisterForm
 from app import app
@@ -25,8 +26,9 @@ def index():
         return redirect(url_for("login"))
     today = today_at_midnight()
     current_poll = get_current_poll(today)
+    current_winner = get_current_winner(today)
     # print(current_poll)
-    return render_template("index.html", poll=current_poll, date=today)
+    return render_template("index.html", poll=current_poll, date=today, current_winner=current_winner)
 
 
 @app.route("/vote", methods=["GET", "POST"])
