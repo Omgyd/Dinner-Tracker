@@ -100,9 +100,9 @@ def update_vote(dish, date, user):
 
 def get_current_winner(date):
     winning_votes = 0
-    winner = "No current winner."
+    winner = "There is no current winner!"
     if get_current_poll(date) == None:
-        return False
+        return "There is no current winner!"
     for item, votes in get_current_poll(date).items():
         if item != 'total_votes':
             if votes["Votes"] > winning_votes:
