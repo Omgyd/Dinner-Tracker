@@ -93,10 +93,11 @@ def update_vote(dish, date, user):
     if user in voted_list["voted"]:
         flash("You have already voted")
         return redirect("index.html")
-    new_vote = {"$set": {dish: {"Votes": vote_count + 1}}, "$inc": {'total_votes': 1}}
+    new_vote = {"$set": {dish: {"Votes": vote_count + 1}}, "$inc": {"total_votes": 1}}
     new_voter = {"$push": {"voted": user}}
     poll.update_one(poll_to_update, new_vote)
     votes.update_one(voted_list, new_voter)
+
 
 def get_current_winner(date):
     winning_votes = 0
@@ -104,7 +105,7 @@ def get_current_winner(date):
     if get_current_poll(date) == None:
         return "There is no current winner!"
     for item, votes in get_current_poll(date).items():
-        if item != 'total_votes':
+        if item != "total_votes":
             if votes["Votes"] > winning_votes:
                 winning_votes = votes["Votes"]
                 winner = item
@@ -118,7 +119,7 @@ def set_votes_zero():
     zero_voters = {"$set": {"voted": None}}
     for item in get_current_poll(today):
         new_vote = {"$set": {item: {"Votes": 0}}}
-        new_total = {"$set": {'total_votes': 0}}
+        new_total = {"$set": {"total_votes": 0}}
         poll.update_one(get_current_poll(today), new_vote)
         poll.update_one(get_current_poll(today), new_total)
     votes.update_one(voters, zero_voters)
