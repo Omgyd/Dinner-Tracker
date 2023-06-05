@@ -28,7 +28,9 @@ def index():
     current_poll = get_current_poll(today)
     current_winner = get_current_winner(today)
     # print(current_poll)
-    return render_template("index.html", poll=current_poll, date=today, current_winner=current_winner)
+    return render_template(
+        "index.html", poll=current_poll, date=today, current_winner=current_winner
+    )
 
 
 @app.route("/vote", methods=["GET", "POST"])

@@ -23,3 +23,15 @@ h3 {
 .progress-bar {
   background-color: #4397c4;
 }
+
+.main-date {
+  margin-top: 1rem;
+}
+
+.winner-display {
+  margin-top: 1rem;
+}
+
+.form-display {
+  margin-top: 1rem;
+}

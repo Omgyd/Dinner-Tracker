@@ -2,28 +2,31 @@
 {% extends "layout.html" %}
 
 {% block body_block %}
+    <div class="d-flex justify-content-center form-display">
+        <form name="login" method="post" novalidate class="form">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {%- for category, message in messages %}
+                    <span class="form__flash form__flash--{{category}}"> {{ message }}</span>
+                {% endfor %}
+            {% endwith %}
 
-    <form name="login" method="post" novalidate class="form">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {%- for category, message in messages %}
-                <span class="form__flash form__flash--{{category}}"> {{ message }}</span>
-            {% endfor %}
-        {% endwith %}
-
-        <div class="form__container">
-            {{ form.hidden_tag() }}
-    
-            {{ render_text_field(form.email) }}
-            {{ render_text_field(form.password) }}
-    
-            <span class="form__small">
-                Don't have an account? <a href="{{ url_for('register') }}" class="form__link">Register here</a>.
-            </span>
-    
-            <div>
-                {{ form.submit(class_="button button--form") }}
+            <div class="form__conatiner">
+                {{ form.hidden_tag() }}
+                
+                    {{ render_text_field(form.email) }}
+                
+                    {{ render_text_field(form.password) }}
+                <div class="row mb-3">
+                    <span class="form__small">
+                        Don't have an account? <a href="{{ url_for('register') }}" class="form__link">Register here</a>.
+                    </span>
+                </div>
+        
+                <div>
+                    {{ form.submit(class_="btn btn-secondary") }}
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 
 {% endblock %}
