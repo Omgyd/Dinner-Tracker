@@ -1,11 +1,23 @@
 {% macro render_text_field(field) %}
-
-<div class="form__group">
-    {{ field.label(class_="form__label") }}
-    {{ field(class_="form__field") }}
+    <div class="row mb-3">
+            {{ field.label(class_="col-sm-4 col-form-label form__label") }}
+        <div class="col-sm-8">
+            {{ field(class_="form-control") }}
+        </div>
+    </div>
 
     {% for error in field.errors %}
         <span>{{ error }}</span>
     {% endfor %}
-</div>
+
 {% endmacro %}
+
+
+{% macro winning_percent(votes, total_votes) %} 
+    {%- if votes == 0 or total_votes == 0 -%}
+        0
+    {% else %}
+    {{((votes / total_votes) * 100) | round}}
+    {%- endif -%}
+{% endmacro %}
+

@@ -1,11 +1,33 @@
+{% from 'macros/fields.html' import winning_percent %}
 {% extends 'layout.html' %}
 
 
 {% block body_block %}
-    <time class="date" datetime="{{date}}">
-        <h1>{{ date.strftime("%m-%d") }}</h1>
-    </time>
-    <h1>This is the dinner tracker app</h1>
+  <div class="d-flex justify-content-center main-date">
+    <h1>Dinner for<time class="date" datetime="{{date}}"> </time> {{ date.strftime("%m-%d") }}</time></h1>
+  </div>
+    {% if not poll %}
+      <h1>No Poll for Today</h1>
+    {% else %}
+        {% for item, votes in poll.items() %}
+        {% if item != 'total_votes' %}
+        <form class="poll__form" method="POST" action="{{ url_for('vote') }}">
+          <div class="d-flex">
+          <div class="me-auto">
+              <h3>{{ item }}</h3>
+            </div>
+            <div class="ml-auto p-2">
+              <button type="submit" class="btn btn-secondary" name="dish" value="{{ item }}">Vote</button>
+            </div>
+          </div>
+          <div class="progress position-relative">
+            <div class="progress-bar" role="progressbar" style="width:{{winning_percent(votes['Votes'], poll['total_votes'])}}%" aria-valuenow="{{winning_percent(votes['Votes'], poll['total_votes'])}}" aria-valuemin="0" aria-valuemax="100"></div>
+            <small class="justify-content-center d-flex position-absolute w-100">Votes: {{ votes["Votes"] }} ({{ winning_percent(votes['Votes'], poll['total_votes']) }}%)</small>
+          </div>
+        </form>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
     {% with messages = get_flashed_messages() %}
     {% if messages %}
       <ul class=flashes>
@@ -15,15 +37,7 @@
       </ul>
     {% endif %}
     {% endwith %}
-    {% if not poll %}
-      <h1>No Poll for Today</h1>
-    {% else %}
-        {% for item, votes in poll.items() %}
-        <h3> Dish: {{ item }}</h3>
-        <p> Votes: {{ votes["Votes"] }}</p>
-        <form class="poll__form" method="POST" action="{{ url_for('vote') }}">
-            <button type="submit" class="btn btn-secondary" name="dish" value="{{ item }}">Vote</button>
-        </form>
-        {% endfor %}
-    {% endif %}        
+    <div class="d-flex justify-content-center winner-display">
+      <h3>Current Winner: {{ current_winner }}</h3>
+    </div>
 {% endblock %}
