@@ -21,12 +21,13 @@
           {{ render_text_field(form.password) }}
           {{ render_text_field(form.confirm_password) }}
 
-          <span class="form__small">
-              Already have an account? <a href="{{ url_for('login') }}" class="form__link">Log in here</a>.
-          </span>
-
+          <div class="row mb-3">
+            <span class="form__small">
+                Already have an account? <a href="{{ url_for('login') }}" class="form__link">Log in here</a>.
+            </span>
+          </div>
           <div>
-              {{ form.submit(class_="button button--form") }}
+              {{ form.submit(class_="btn btn-secondary") }}
           </div>
         </div>
       </form>

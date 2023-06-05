@@ -10,18 +10,20 @@
                 {% endfor %}
             {% endwith %}
 
-            <div class="form__container">
+            <div class="form__conatiner">
                 {{ form.hidden_tag() }}
-        
-                {{ render_text_field(form.email) }}
-                {{ render_text_field(form.password) }}
-        
-                <span class="form__small">
-                    Don't have an account? <a href="{{ url_for('register') }}" class="form__link">Register here</a>.
-                </span>
+                
+                    {{ render_text_field(form.email) }}
+                
+                    {{ render_text_field(form.password) }}
+                <div class="row mb-3">
+                    <span class="form__small">
+                        Don't have an account? <a href="{{ url_for('register') }}" class="form__link">Register here</a>.
+                    </span>
+                </div>
         
                 <div>
-                    {{ form.submit(class_="button button--form") }}
+                    {{ form.submit(class_="btn btn-secondary") }}
                 </div>
             </div>
         </form>
