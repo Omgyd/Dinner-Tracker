@@ -65,6 +65,10 @@ def login():
 
     return render_template("login.html", form=form)
 
+@app.route("/home")
+def landing():
+    return render_template('landing.html')
+
 
 @app.route("/logout")
 def logout():
