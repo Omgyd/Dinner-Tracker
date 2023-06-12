@@ -13,8 +13,15 @@
         {% if item != 'total_votes' %}
         <form class="poll__form" method="POST" action="{{ url_for('vote') }}">
           <div class="d-flex">
-          <div class="me-auto">
-              <h3>{{ item }}</h3>
+            <div class="me-auto">
+                <a class="dish-item" data-bs-toggle="collapse" href="#collapseExample{{loop.index}}" role="button" aria-expanded="false" aria-controls="collapseExample{{loop.index}}">
+                    {{ item }}
+                </a>
+                <div class="collapse" id="collapseExample{{loop.index}}">
+                    <div class="card card-body">
+                    Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                    </div>
+                </div>
             </div>
             <div class="ml-auto p-2">
               <button type="submit" class="btn btn-secondary" name="dish" value="{{ item }}">Vote</button>

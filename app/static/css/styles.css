@@ -46,6 +46,23 @@ h3 {
   width: 100%;
   height: 40px;
   padding-top: 5px;
+  margin-bottom: 5px;
   background: inherit;
   border-top: 2px solid white;   
+}
+
+.footer__item {
+  text-decoration: none;
+  color: white;
+}
+
+.card-body {
+  color: black;
+  margin-bottom: 1rem;
+}
+
+.dish-item {
+  text-decoration: none;
+  color: white;
+  font-size: 1.5rem;
 }
