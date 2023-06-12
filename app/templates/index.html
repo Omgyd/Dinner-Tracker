@@ -12,25 +12,35 @@
         {% for item, votes in poll.items() %}
         {% if item != 'total_votes' %}
         <form class="poll__form" method="POST" action="{{ url_for('vote') }}">
-          <div class="d-flex">
-            <div class="me-auto">
+          <div class="container">
+            <div class="row mb-2">
+              <div class="col-lg-11">
                 <a class="dish-item" data-bs-toggle="collapse" href="#collapseExample{{loop.index}}" role="button" aria-expanded="false" aria-controls="collapseExample{{loop.index}}">
                     {{ item }}
                 </a>
                 <div class="collapse" id="collapseExample{{loop.index}}">
                     <div class="card card-body">
-                    Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                      <ul class="list-group list-group-horizontal-lg">
+                      {% for item in dish_func(item) %}
+                        
+                          <li class="list-group-item flex-fill">{{ item | capitalize}}</li>
+                        
+                      {% endfor %}
+                      </ul>
                     </div>
                 </div>
-            </div>
-            <div class="ml-auto p-2">
+              </div>
+              <div class="col-lg-1 mb-2">
               <button type="submit" class="btn btn-secondary" name="dish" value="{{ item }}">Vote</button>
             </div>
-          </div>
-          <div class="progress position-relative">
-            <div class="progress-bar" role="progressbar" style="width:{{winning_percent(votes['Votes'], poll['total_votes'])}}%" aria-valuenow="{{winning_percent(votes['Votes'], poll['total_votes'])}}" aria-valuemin="0" aria-valuemax="100"></div>
-            <small class="justify-content-center d-flex position-absolute w-100">Votes: {{ votes["Votes"] }} ({{ winning_percent(votes['Votes'], poll['total_votes']) }}%)</small>
-          </div>
+            </div>
+            </div>
+            <div class="progress position-relative">
+              <div class="progress-bar" role="progressbar" style="width:{{winning_percent(votes['Votes'], poll['total_votes'])}}%" aria-valuenow="{{winning_percent(votes['Votes'], poll['total_votes'])}}" aria-valuemin="0" aria-valuemax="100">
+                
+              </div>
+                <small class="justify-content-center d-flex position-absolute w-100">Votes: {{ votes["Votes"] }} ({{ winning_percent(votes['Votes'], poll['total_votes']) }}%)</small>
+              </div>
         </form>
         {% endif %}
         {% endfor %}
@@ -44,7 +54,7 @@
       </ul>
     {% endif %}
     {% endwith %}
-    <div class="d-flex justify-content-center winner-display">
+    <div class="d-flex justify-content-center winner-display mb-4">
       <h3>Current Winner: {{ current_winner }}</h3>
     </div>
 {% endblock %}

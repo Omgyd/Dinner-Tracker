@@ -53,6 +53,11 @@ def get_dish(dish_name):
     dish = dishes.find_one({"dish": dish_name})
     return dish
 
+def get_dish_ingredients(dish_name):
+    dish = get_dish(dish_name)
+    ingredients = [x.strip() for x in dish['ingredients'].split(',')]
+    return ingredients
+
 
 def create_poll_options():
     dish_list = get_dishes()

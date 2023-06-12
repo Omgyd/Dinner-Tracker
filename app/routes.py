@@ -9,6 +9,7 @@ from app.mongo import (
     register_user,
     login_user,
     get_current_winner,
+    get_dish_ingredients,
 )
 from app.forms import LoginForm, RegisterForm
 from app import app
@@ -64,6 +65,13 @@ def login():
             return redirect(url_for("index"))
 
     return render_template("login.html", form=form)
+
+# Test for funciton in in Jinja template, replace with function to get ingredients for each dish.
+@app.context_processor
+def utility_processor():
+    def dish_func(dish):
+        return get_dish_ingredients(dish)
+    return dict(dish_func=dish_func)
 
 @app.route("/home")
 def landing():
