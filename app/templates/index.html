@@ -7,7 +7,9 @@
     <h1>Dinner for<time class="date" datetime="{{date}}"> </time> {{ date.strftime("%m-%d") }}</time></h1>
   </div>
     {% if not poll %}
+    <div class="d-flex justify-content-center">
       <h1>No Poll for Today</h1>
+    </div>
     {% else %}
         {% for item, votes in poll.items() %}
         {% if item != 'total_votes' %}
