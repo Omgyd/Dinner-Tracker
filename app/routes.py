@@ -24,7 +24,7 @@ if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
 @app.route("/", methods=["GET", "POST"])
 def index():
     if not session.get("email"):
-        return redirect(url_for("login"))
+        return redirect(url_for("landing"))
     today = today_at_midnight()
     current_poll = get_current_poll(today)
     current_winner = get_current_winner(today)
@@ -65,6 +65,11 @@ def login():
             return redirect(url_for("index"))
 
     return render_template("login.html", form=form)
+
+@app.route("/user", methods=["GET", "POST"])
+def user_home():
+    user = session.get("email")
+    return render_template("user_home.html", user=user)
 
 # Test for funciton in in Jinja template, replace with function to get ingredients for each dish.
 @app.context_processor
