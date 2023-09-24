@@ -71,6 +71,12 @@ def user_home():
     user = session.get("email")
     return render_template("user_home.html", user=user)
 
+@app.route("/grocery-list", methods=["GET", "POST"])
+def grocery_list():
+    user = session.get("email")
+    return render_template("grocery_list.html", user=user)
+
+
 # Test for funciton in in Jinja template, replace with function to get ingredients for each dish.
 @app.context_processor
 def utility_processor():
