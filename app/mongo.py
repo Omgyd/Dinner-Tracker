@@ -25,6 +25,7 @@ dishes = db.dishes
 poll = db.poll
 users = db.users
 votes = db.votes
+grocery= db.grocery
 
 
 def today_at_midnight():
@@ -159,6 +160,8 @@ def login_user(form):
         session["email"] = user.email
         return redirect(url_for("index"))
 
+def get_grocery_list():
+    pass
 
 # create_poll()
 # poll.update_one({"_id": "2c682d204a7a4837ad6c633e7657b0e3"}, {"$set": {"total_votes": 6}})

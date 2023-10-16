@@ -1,7 +1,7 @@
 {% from 'macros/fields.html' import winning_percent %}
 {% extends 'layout.html' %}
 
-{% block title %}Dinner Tracker{% endblock %}
+{% block title %}Dinner Dilemma{% endblock %}
 {% block body_block %}
   <div class="d-flex justify-content-center main-date">
     <h1>Dinner for<time class="date" datetime="{{date}}"> </time> {{ date.strftime("%m-%d") }}</time></h1>
@@ -22,13 +22,21 @@
                 </a>
                 <div class="collapse" id="collapseExample{{loop.index}}">
                     <div class="card card-body">
-                      <ul class="list-group list-group-horizontal-lg">
+                      <div class="list-group list-group-horizontal-lg">
+                        <div class="btn-toolbar" role="toolbar" aria-label="Basic checkbox toggle button group">
                       {% for item in dish_func(item) %}
-                        
-                          <li class="list-group-item flex-fill">{{ item | capitalize}}</li>
-                        
+                      
+                      
+
+                        <div class="btn-group btn-group-sm me-2 mt-2" role="group" aria-label="First group">
+                            <input type="checkbox" class="btn-check" id="btncheck{{item}}" autocomplete="off" value="{{item}}">
+                            <label class="btn button-outline-primary" for="btncheck{{item}}">{{ item | capitalize}}</label>
+                        </div>
+
+                          
                       {% endfor %}
-                      </ul>
+                    </div> 
+                    </div>
                     </div>
                 </div>
               </div>
