@@ -19,8 +19,11 @@
           {{ form.hidden_tag() }}
 
           {{ render_text_field(form.email) }}
+          {{ render_text_field(form.first_name) }}
+          {{ render_text_field(form.last_name)  }}
           {{ render_text_field(form.password) }}
           {{ render_text_field(form.confirm_password) }}
+
 
           <div class="row mb-3">
             <span class="form__small">
