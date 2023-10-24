@@ -16,7 +16,7 @@
         <form class="poll__form" method="POST" action="{{ url_for('vote') }}">
           <div class="container">
             <div class="row mb-2">
-              <div class="col-lg-11">
+              <div class="col-lg-10">
                 <a class="dish-item" data-bs-toggle="collapse" href="#collapseExample{{loop.index}}" role="button" aria-expanded="false" aria-controls="collapseExample{{loop.index}}">
                     {{ item }}
                 </a>
@@ -40,10 +40,10 @@
                     </div>
                 </div>
               </div>
-              <div class="col-lg-1 mb-1">
+              <div class="col-lg-2 mb-1">
                 <div class="d-grid gap-2 d-md-block">
                   <button type="submit" class="btn btn-secondary" name="dish" value="{{ item }}">Vote</button>
-                  <button type="submit" class="btn btn-primary mt-2">Add</button>
+                  <button type="submit" class="btn btn-primary">Add</button>
                 </div>
             </div>
             </div>
