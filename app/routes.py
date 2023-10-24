@@ -68,7 +68,7 @@ def login():
 
 @app.route("/user", methods=["GET", "POST"])
 def user_home():
-    user = session.get("email")
+    user = session.get("name")
     return render_template("user_home.html", user=user)
 
 @app.route("/grocery-list", methods=["GET", "POST"])

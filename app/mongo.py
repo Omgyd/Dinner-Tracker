@@ -142,6 +142,8 @@ def register_user(form):
             _id=uuid.uuid4().hex,
             email=form.email.data,
             password=pbkdf2_sha256.hash(form.password.data),
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
         )
 
         users.insert_one(asdict(user))
@@ -158,6 +160,7 @@ def login_user(form):
     if user and pbkdf2_sha256.verify(form.password.data, user.password):
         session["user_id"] = user._id
         session["email"] = user.email
+        session['name'] = user.first_name
         return redirect(url_for("index"))
 
 def get_grocery_list():
