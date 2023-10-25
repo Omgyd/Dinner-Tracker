@@ -5,7 +5,7 @@ import datetime as dt
 from flask import redirect, render_template, flash, url_for, session
 from dotenv import load_dotenv
 
-from .models import User
+from .models import User, Grocery
 from passlib.hash import pbkdf2_sha256
 from dataclasses import asdict
 
@@ -144,9 +144,14 @@ def register_user(form):
             password=pbkdf2_sha256.hash(form.password.data),
             first_name=form.first_name.data,
             last_name=form.last_name.data,
+            group_id = uuid.uuid4().hex
         )
-
+        grocery_list = Grocery(
+            _id=user.group_id,
+            items = []
+        )
         users.insert_one(asdict(user))
+        grocery.insert_one(asdict(grocery_list))
 
         flash("User registered successfully", "success")
 
@@ -161,10 +166,10 @@ def login_user(form):
         session["user_id"] = user._id
         session["email"] = user.email
         session['name'] = user.first_name
+        session['group_id'] = user.group_id
         return redirect(url_for("index"))
 
-def get_grocery_list():
-    pass
+def get_grocery_list(user):
+    return user
 
-# create_poll()
-# poll.update_one({"_id": "2c682d204a7a4837ad6c633e7657b0e3"}, {"$set": {"total_votes": 6}})
+

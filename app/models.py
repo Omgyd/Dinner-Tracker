@@ -8,7 +8,7 @@ class User:
     password: str
     first_name: str
     last_name: str
-    group_number: str
+    group_id: str
 
 
 @dataclass
@@ -21,5 +21,5 @@ class Dish:
 @dataclass
 class Grocery:
     _id: str
-    item:list
+    items:list
 

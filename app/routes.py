@@ -10,6 +10,7 @@ from app.mongo import (
     login_user,
     get_current_winner,
     get_dish_ingredients,
+    get_grocery_list
 )
 from app.forms import LoginForm, RegisterForm
 from app import app
@@ -73,8 +74,9 @@ def user_home():
 
 @app.route("/grocery-list", methods=["GET", "POST"])
 def grocery_list():
-    user = session.get("email")
-    return render_template("grocery_list.html", user=user)
+    user = session.get("group_id")
+    grocery_list = get_grocery_list(user)
+    return render_template("grocery_list.html", grocery_list=grocery_list)
 
 
 # Test for funciton in in Jinja template, replace with function to get ingredients for each dish.
