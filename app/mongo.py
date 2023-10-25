@@ -172,4 +172,15 @@ def login_user(form):
 def get_grocery_list(user):
     return user
 
+# This function will pass in a users first name and use that to search for their group_id.
+# Change this later to also accept the target user to update the id and remove the names.
+def update_id(user):
+    primary_user = users.find_one({"first_name": user})
+    group_id = primary_user['group_id']
+    filter = {"email": "Amaralowry@gmail.com"}
+    new_data = {"$set": {"first_name": "Amara", "last_name": "Lowry", "group_id": group_id }}
+    users.update_one(filter, new_data)
+
+
+
 
