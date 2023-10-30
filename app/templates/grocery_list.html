@@ -10,7 +10,13 @@
         <h1>This is where the grocery list will go</h1>
     </div>
         <ul>
-            <li>This is the grocery list</li>
+            {% if grocery_list %}
+            {% for item in grocery_list %}
+            <li>{{item}}</li>
+            {% endfor %}
+            {% else %}
+            <li>No items in list</li>
+            {% endif %}
         </ul>
     
 

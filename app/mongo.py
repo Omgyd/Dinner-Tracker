@@ -154,6 +154,7 @@ def register_user(form):
         grocery.insert_one(asdict(grocery_list))
 
         flash("User registered successfully", "success")
+        return redirect(url_for("index"))
 
 
 def login_user(form):
@@ -168,9 +169,18 @@ def login_user(form):
         session['name'] = user.first_name
         session['group_id'] = user.group_id
         return redirect(url_for("index"))
+    
+def add_item(user_id, item):
+    grocery_list = grocery.find_one({"group_id": user_id})
+    item_to_add = {"$push": {"items": item}}
+    grocery.update_one(grocery_list, item_to_add)
 
-def get_grocery_list(user):
-    return user
+def delete_item(user_id):
+    pass
+
+def get_grocery_list(user_id):
+    grocery_list = grocery.find_one({"group_id": user_id})
+    return grocery_list
 
 # This function will pass in a users first name and use that to search for their group_id.
 # Change this later to also accept the target user to update the id and remove the names.
