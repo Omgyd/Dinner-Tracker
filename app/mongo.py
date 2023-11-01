@@ -170,17 +170,17 @@ def login_user(form):
         session['group_id'] = user.group_id
         return redirect(url_for("index"))
     
-def add_item(user_id, item):
-    grocery_list = grocery.find_one({"group_id": user_id})
-    item_to_add = {"$push": {"items": item}}
+def add_item(user_id, form):
+    grocery_list = grocery.find_one({"_id": user_id})
+    item_to_add = {"$push": {"items": form.item.data}}
     grocery.update_one(grocery_list, item_to_add)
 
 def delete_item(user_id):
     pass
 
 def get_grocery_list(user_id):
-    grocery_list = grocery.find_one({"group_id": user_id})
-    return grocery_list
+    grocery_list = grocery.find_one({"_id": user_id})
+    return grocery_list["items"]
 
 # This function will pass in a users first name and use that to search for their group_id.
 # Change this later to also accept the target user to update the id and remove the names.

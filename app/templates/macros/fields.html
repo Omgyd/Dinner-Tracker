@@ -12,6 +12,16 @@
 
 {% endmacro %}
 
+{% macro add_item(field) %}
+<div class="row align-items-center justify-content-center">
+    {{field.label(class="col-auto me-2")}}
+    <div class="col">
+        {{ field(class="form-control")}}
+    </div>
+</div>
+
+{% endmacro %}
+
 
 {% macro winning_percent(votes, total_votes) %} 
     {%- if votes == 0 or total_votes == 0 -%}

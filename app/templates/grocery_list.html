@@ -1,3 +1,4 @@
+{% from "macros/fields.html" import add_item %}
 {% extends 'layout.html' %}
 
 {% block title %}Home{% endblock %}
@@ -5,10 +6,22 @@
 
 {% block body_block %}
 
-<div class="container"> 
-    <div class="text-center">
-        <h1>This is where the grocery list will go</h1>
+<div class="container justify-content-center align-items-center mt-2">
+    <form name="add_list" method="post">
+    <div class="row align-items-center justify-content-center">
+        <!-- <label for="inputField" class="col-auto me-2">Add Item:</label> -->
+        {{ form.hidden_tag() }}
+      <div class="col-sm-6">
+        {{ add_item(form.item) }}
+      </div>
+      <div class="col-sm-2">
+        {{ form.submit(class_="btn btn-secondary") }}
+      </div>
     </div>
+    </form>
+</div>
+<div>
+    <div>
         <ul>
             {% if grocery_list %}
             {% for item in grocery_list %}
@@ -18,6 +31,8 @@
             <li>No items in list</li>
             {% endif %}
         </ul>
+    </div>
+
     
 
 </div>

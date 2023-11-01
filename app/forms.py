@@ -40,3 +40,8 @@ class RegisterForm(FlaskForm):
     )
 
     submit = SubmitField("Register")
+
+class GroceryForm(FlaskForm):
+    item = StringField("Add Item", validators=[InputRequired()])
+
+    submit = SubmitField("Add Item")
