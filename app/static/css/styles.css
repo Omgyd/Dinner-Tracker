@@ -89,3 +89,7 @@ h3 {
   color: white;
   background-color: #007A92 !important;
 }
+
+.grocery_item {
+  list-style-type: none;
+}
