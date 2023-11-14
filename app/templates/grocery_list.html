@@ -7,30 +7,34 @@
 {% block body_block %}
 
 <div class="container justify-content-center align-items-center mt-2">
-    <form name="add_list" method="post">
-    <div class="row align-items-center justify-content-center">
-        <!-- <label for="inputField" class="col-auto me-2">Add Item:</label> -->
+    <form name="add_list" method="post" id="add_form">
+      <div class="row align-items-center justify-content-center">
         {{ form.hidden_tag() }}
-      <div class="col-sm-6">
         {{ add_item(form.item) }}
-      </div>
-      <div class="col-sm-2">
+      <div class="col-sm-2 mx-2">
         {{ form.submit(class_="btn btn-secondary") }}
       </div>
-    </div>
     </form>
-</div>
-<div>
+  </div>
+</div>   
     <div>
+      <form id="grocery_list_form">
         <ul id="myList">
             {% if grocery_list %}
             {% for item in grocery_list %}
-            <li class="grocery_item">{{item}}</li>
+            <li class="grocery_item">
+              <input type="checkbox" name="checkbox" id="{{item}}" onchange="toggleStrikeThrough('{{item}}')" value="{{item}}">
+              <label for="{{item}}">{{item}}</label>
+            </li>
             {% endfor %}
             {% else %}
             <li>No items in list</li>
             {% endif %}
         </ul>
+        <div class="col-sm-2 mx-2">
+          <button class="btn btn-primary" id="updateButton" hx-trigger="click" hx-post="{{url_for('update_list')}}" hx-form="grocery_list_form">Complete</button>
+        </div>
+        </form>
     </div>
 
     

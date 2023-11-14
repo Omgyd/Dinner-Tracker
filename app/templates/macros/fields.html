@@ -13,12 +13,10 @@
 {% endmacro %}
 
 {% macro add_item(field) %}
-<div class="row align-items-center justify-content-center">
-    {{field.label(class="col-auto me-2")}}
-    <div class="col">
+    {{field.label(class="col-sm-1 col-form-label form__label")}}
+    <div class="col-sm-5 mx-2">
         {{ field(class="form-control")}}
     </div>
-</div>
 
 {% endmacro %}
 

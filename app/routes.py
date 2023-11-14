@@ -83,6 +83,12 @@ def grocery_list():
         return redirect(url_for("grocery_list"))
     return render_template("grocery_list.html", grocery_list=grocery_list, form=form)
 
+@app.route("/update_list", methods=["POST"])
+def update_list():
+    checked_items = request.form.getlist("checkbox")
+    print("Checked Items:", checked_items)
+    return "Completed"
+
 
 # Test for funciton in in Jinja template, replace with function to get ingredients for each dish.
 @app.context_processor

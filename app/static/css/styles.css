@@ -93,3 +93,7 @@ h3 {
 .grocery_item {
   list-style-type: none;
 }
+
+#myList input[type="checkbox"] {
+  display: none;
+}
